@@ -7,6 +7,7 @@ body {
 #app {
   /* 全体の高さを画面いっぱいに */
   margin: 0;
+  /* 変更照すt*/
   padding: 0px;
   background-color: cyan;
   opacity: 2;
