@@ -1,7 +1,8 @@
 <script setup>
 import { ref,computed } from 'vue'
-import conponent1 from './components/raiout1.vue'
-import conponent2 from './components/raiout2.vue'
+import Header from './components/header.vue'
+// import conponent1 from './components/raiout1.vue'
+// import conponent2 from './components/raiout2.vue'
 
 // 切り替え用のフラグ
 const isA = ref(true)
@@ -12,12 +13,13 @@ function toggle() {
 }
 
 // 表示するコンポーネントを決定
-const currentComponent = computed(() => (isA.value ? conponent1 : conponent2))
+// const currentComponent = computed(() => (isA.value ? conponent1 : conponent2))
 
 </script>
 
 <template>
   <header class="header">
+    <Header />
   <h1>vue3をやってみるよ</h1>
 </header>
   <div class="controller-rayout">
