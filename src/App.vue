@@ -1,16 +1,29 @@
 <script setup>
-import { ref,computed } from 'vue'
+// import { ref,computed } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import Header from './components/header.vue'
+import Menu from './components/Menu.vue'
+import Hamburger from './components/hamburger.vue'
 // import conponent1 from './components/raiout1.vue'
 // import conponent2 from './components/raiout2.vue'
 
-// 切り替え用のフラグ
-const isA = ref(true)
+const isMobile = ref(false)
+const showMenu = ref(false)
 
-// 切り替え関数
-function toggle() {
-  isA.value = !isA.value
+const checkWidth = () => {
+  isMobile.value = window.innerWidth <= 768
 }
+const toggleMenu = () => {
+  showMenu.value = !showMenu.value
+}
+
+onMounted(() => {
+  checkWidth()
+  window.addEventListener('resize', checkWidth)
+})
+onUnmounted(() => {
+  window.removeEventListener('resize', checkWidth)
+})
 
 // 表示するコンポーネントを決定
 // const currentComponent = computed(() => (isA.value ? conponent1 : conponent2))
@@ -20,19 +33,14 @@ function toggle() {
 <template>
   <header class="header">
     <Header />
-  <h1>vue3をやってみるよ</h1>
+    <!-- スマホだけ表示されるハンバーガー -->
 </header>
   <div class="controller-rayout">
-    <div class="sub-container">
-      <ul class="space-y-">
-        <li class="bg-gray-700 text-white p-4 rounded hover:bg-gray-600 cursor-pointer">リスト1</li>
-        <li class="bg-gray-700 text-white p-4 rounded hover:bg-gray-600 cursor-pointer">リスト2</li>
-        <li class="bg-gray-700 text-white p-4 rounded hover:bg-gray-600 cursor-pointer">リスト3</li>
-        <li class="bg-gray-700 text-white p-4 rounded hover:bg-gray-600 cursor-pointer">リスト4</li>
-      </ul>
+    <div class="layout">
+      <Menu v-if="!isMobile || showMenu" />
+      <Hamburger v-if="isMobile" @toggle="toggleMenu" />
     </div>
   <div class="main-container">
-    <button @click="toggle" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">コンポーネント切り替え</button>
     <component :is="currentComponent" />
     <!-- <testButton></testButton> -->
   </div>
@@ -51,23 +59,6 @@ function toggle() {
   border: solid darkgray;
   overflow-y: auto;
   margin: 20px;
-}
-
-.sub-container{
-  width: 200px;
-}
-
-.sub-container ul{
-  padding-left: 20px;
-  position: relative;
-}
-
-.sub-container li{
-  border-left: solid 6px white;
-  margin-bottom: 3px;
-  line-height: 1.5;
-  padding: 1.5em;
-  list-style-type: none!important;
 }
 
 .controller-rayout{
